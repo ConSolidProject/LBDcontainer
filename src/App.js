@@ -14,8 +14,8 @@ import {
 } from "./atoms";
 import c from './config'
 import {loadProjectMetadata} from "consolid"
-import {Options} from '../../../consolid-react-ui/src/lib/'
-// import {Options} from 'consolid-react-ui'
+// import {Options} from '../../../consolid-react-ui/src/lib/'
+import {Options} from 'consolid-react-ui'
 import DashboardPage from './modules-solid/dashboard/DashboardPage'
 import Header from "./components/Header";
 import { createBrowserHistory } from "history";
