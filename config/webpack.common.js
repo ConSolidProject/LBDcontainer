@@ -57,7 +57,9 @@ module.exports = {
       path: require.resolve("path-browserify"),
       fs: require.resolve("browserify-fs"),
       https: require.resolve("https-browserify"),
-      http: require.resolve("stream-http")
+      http: require.resolve("stream-http"),
+    url: require.resolve("url/"),
+    querystring: require.resolve("querystring-es3")
     },
     // alias: {
     //   consolid: "/home/jmauwerb/Documents/LBDserver/consolid"
