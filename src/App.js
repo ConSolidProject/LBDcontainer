@@ -13,7 +13,7 @@ import {
   trigger as t,
 } from "./atoms";
 import c from './config'
-// import {loadProjectMetadata} from "consolid"
+import {loadProjectMetadata} from "consolid"
 // import {Options} from '../../../consolid-react-ui/src/lib/'
 import {Options} from 'consolid-react-ui'
 import DashboardPage from './modules-solid/dashboard/DashboardPage'
