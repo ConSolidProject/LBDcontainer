@@ -12,7 +12,7 @@ const config = atom({
           "dimensions": {
             "x": 0,
             "y": 0,
-            "h": 900,
+            "h": 800,
             "w": 600
           },
           "children": {
@@ -37,21 +37,21 @@ const config = atom({
           "dimensions": {
             "x": 600,
             "y": 0,
-            "h": 450,
-            "w": 660
+            "h": 800,
+            "w": 600
           }
         },
-            "imageannotator": {
-              "url": "https://consolidproject.github.io/pluginImageViewer/remoteEntry.js",
-              "scope": "imageannotator",
-              "module": "./index",
-              "dimensions": {
-                "x": 600,
-                "y": 450,
-                "h": 450,
-                "w": 660
-              }
-            }
+        "imageannotator": {
+          "url": "https://consolidproject.github.io/pluginImageViewer/remoteEntry.js",
+          "scope": "imageannotator",
+          "module": "./index",
+          "dimensions": {
+            "x": 1200,
+            "y": 0,
+            "h": 800,
+            "w": 700
+          }
+        }
       }
       
 })

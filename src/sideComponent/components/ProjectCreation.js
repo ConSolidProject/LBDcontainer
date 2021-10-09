@@ -5,7 +5,8 @@ import {
   createProject,
   getLBDlocation,
   checkInvites,
-} from "consolid";
+  joinProject
+} from "../../../../../consolid";
 import {
   TextField,
   Button,
@@ -19,37 +20,36 @@ import {
 } from "@material-ui/core";
 import { getDefaultSession } from "@inrupt/solid-client-authn-browser";
 import { v4 } from "uuid";
-import AddCircleOutlineIcon from '@material-ui/icons/AddCircleOutline';
+import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import ProjectCard from "./ProjectCard";
 
 export default ({ store, projects, setProjects, trigger, setTrigger }) => {
   const [aggregator, setAggregator] = useState(
-    "http://localhost:5000/jeroen/lbd/"
+    "https://pod.lbdserver.org/jeroen/lbd/"
   );
   const [myProjects, setMyProjects] = useState([]);
-  const [stakeholders, setStakeholders] = useState("https://pod.lbdserver.org/pieter/profile/card#me; https://pod.lbdserver.org/jakob/profile/card#me");
+  const [stakeholders, setStakeholders] = useState(
+    "https://pod.lbdserver.org/pieter/profile/card#me; https://podlbdserver.org/jakob/profile/card#me"
+  );
   const [invites, setInvites] = useState([]);
   // trigger rerender on trigger (i.e. if session changes)
-  useEffect(() => {}, [trigger]);
-  // useEffect(() => checkInvites(session).then((e) => setInvites(e)), []);
+  useEffect(() => {
+    getMyInvites()
+  }, [trigger]);
+
 
   async function fetchAggregator(agg, setter) {
     const projects = await getProjectsFromAggregator(agg, getDefaultSession());
-    console.log(`projects`, projects);
+
     setter(projects);
   }
 
   async function onProjectCreate() {
-    const st = stakeholders.split(";").map(el => {
-      return el.replace(/\s+/g, '')
-    })
-    st.push(getDefaultSession().info.webId)
-
-    await createProject(
-      v4(),
-      st,
-      getDefaultSession()
-    );
+    const st = stakeholders.split(";").map((el) => {
+      return el.replace(/\s+/g, "");
+    });
+    st.push(getDefaultSession().info.webId);
+    await createProject(v4(), st, {}, getDefaultSession());
     await getMyProjects();
   }
 
@@ -60,6 +60,17 @@ export default ({ store, projects, setProjects, trigger, setTrigger }) => {
     );
     await fetchAggregator(myLbdLocation, setMyProjects);
   }
+
+  async function getMyInvites() {
+    try {
+    const theInvites = await checkInvites(getDefaultSession())
+    setInvites(theInvites)      
+    } catch (error) {
+      console.log(`error`, error)
+    }
+
+  }
+
   return (
     <React.Fragment>
       <Container component="main">
@@ -96,19 +107,20 @@ export default ({ store, projects, setProjects, trigger, setTrigger }) => {
             <div>
               <br />
               <Typography style={{ textAlign: "justify" }} variant="body1">
-                Otherwise, you may create a project. If you want to invite others to your project, you may add their webIds below.{" "}
+                Otherwise, you may create a project. If you want to invite
+                others to your project, you may add their webIds below.{" "}
               </Typography>
               <br />
               <TextField
-              id="standard-multiline-flexible"
-              label="Stakeholders (separate by ';')"
-              multiline
-              fullWidth
-              rowsMax={10}
-              value={stakeholders.toString()}
-              onChange={(e) => setStakeholders(e.target.value)}
-              style={{ marginTop: 10, marginBottom: 10 }}
-            />{" "}
+                id="standard-multiline-flexible"
+                label="Stakeholders (separate by ';')"
+                multiline
+                fullWidth
+                rowsMax={10}
+                value={stakeholders.toString()}
+                onChange={(e) => setStakeholders(e.target.value)}
+                style={{ marginTop: 10, marginBottom: 10 }}
+              />{" "}
               <Button
                 fullWidth
                 variant="contained"
@@ -144,7 +156,14 @@ export default ({ store, projects, setProjects, trigger, setTrigger }) => {
               <Typography style={{ textAlign: "justify" }} variant="body1">
                 Or join a project for which you were invited for collaboration:
               </Typography>
-              {invites ? <div></div> : <></>}
+              {invites ? <div>
+                {invites.map(inv => {
+                  return (
+                    <InviteCard sender={inv.sender} reference={inv.ref} invite={inv.source} callback={getMyProjects}/>
+                  )
+                })}
+              </div> 
+                : <p>No pending invites</p>}
               <br />
             </div>
           </div>
@@ -157,5 +176,36 @@ export default ({ store, projects, setProjects, trigger, setTrigger }) => {
         )}
       </Container>
     </React.Fragment>
+  );
+};
+
+
+const InviteCard = ({ sender, reference, invite }) => {
+  const [loading, setLoading] = useState(false)
+  const [ready, setReady] = useState(false)
+  async function acceptInvitation() {
+    try {
+      setLoading(true)
+      await joinProject(reference, invite, getDefaultSession())
+      setLoading(false)
+      callback()
+      setReady(true)
+    } catch (error) {
+      setLoading(false)
+      console.log(`error`, error)
+    }
+
+  }
+  if (ready) return <></>
+  return (
+    <div style={{backgroundColor: "bisque"}}>
+      <Card style={{ marginTop: 5, marginBottom: 5 }} variant="outlined">
+        <CardContent>
+          <Typography variant="h6" component="h6" style={{fontSize: "14px"}}>Sender: {sender}</Typography>
+          <Typography component="p" style={{fontSize: "10px"}}>Reference: {reference}</Typography>
+          <Button disabled={loading} onClick={acceptInvitation} variant="contained" color="primary">Join</Button>
+        </CardContent>
+      </Card>
+    </div>
   );
 };

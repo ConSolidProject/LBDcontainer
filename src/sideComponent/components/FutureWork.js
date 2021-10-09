@@ -22,7 +22,7 @@ import { getDefaultSession } from "@inrupt/solid-client-authn-browser";
 export default ({ config, setConfig, trigger, setTrigger }) => {
   const [data, setData] = useState(config);
   const [remoteConfigUrl, setRemoteConfigUrl] = useState(
-    "http://localhost:5000/jeroen/public/remoteConfig1.json"
+    "https://pod.lbdserver.org/jeroen/public/remoteConfig1.json"
   );
 
   // function onConfigChange(key, value, parent, data) {

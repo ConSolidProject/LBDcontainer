@@ -21,35 +21,7 @@ import { getDefaultSession } from "@inrupt/solid-client-authn-browser";
 
 export default ({ config, setConfig, trigger, setTrigger }) => {
   const [data, setData] = useState(config);
-  const [remoteConfigUrl, setRemoteConfigUrl] = useState(
-    "http://localhost:5000/jeroen/public/remoteConfig1.json"
-  );
 
-  // function onConfigChange(key, value, parent, data) {
-
-  //     console.log(`key`, key)
-  //     console.log(`value`, value)
-  //     console.log(`parent`, parent)
-  //     console.log(`data`, data)
-
-  //     let newConfig
-  //     if (data.root) {
-  //         newConfig = data.root
-  //     } else {
-  //         newConfig = data
-  //     }
-  //     setConfig(newConfig)
-  //     setData(newConfig)
-  // }
-
-  async function fetchRemoteConfig(e) {
-    e.preventDefault();
-    const s = getDefaultSession();
-    const conf = await s.fetch(remoteConfigUrl);
-    const newConf = await conf.json();
-    setData(() => newConf);
-    setConfig(() => newConf);
-  }
 
   return (
     <React.Fragment>

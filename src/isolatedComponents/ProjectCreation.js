@@ -29,7 +29,7 @@ import ProjectCard from './ProjectCard'
 
 export default () => {
   const [aggregator, setAggregator] = useState(
-    "http://localhost:5000/jeroen/lbd/"
+    "https://pod.lbdserver.org/jeroen/lbd/"
   );
   const [myProjects, setMyProjects] = useState([]);
   const activeProjects = useRecoilValue(p);
