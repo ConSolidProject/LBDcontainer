@@ -6,7 +6,7 @@ import {
   getLBDlocation,
   checkInvites,
   joinProject
-} from "../../../../../consolid";
+} from "consolid";
 import {
   TextField,
   Button,
