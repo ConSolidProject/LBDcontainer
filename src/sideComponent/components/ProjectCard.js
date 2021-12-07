@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import {
-  loadProjectMetadata
+  loadProjectMetadata, queryComunica
 } from "consolid";
 import {
   Switch,
@@ -11,34 +11,38 @@ import {
   FormControlLabel,
 } from "@material-ui/core";
 import { getDefaultSession } from "@inrupt/solid-client-authn-browser";
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+  QueryClient,
+  QueryClientProvider,
+} from "react-query";
 
-export default ({ project, projects, setProjects, store, setTrigger }) => {
+
+export default ({ project, projects, setProjects, setDatasets }) => {
+  const { isLoading, isError, data: name, error } = useQuery(project, async () => {const res = await queryComunica(`select ?i where {?p <https://lbdserver.org/vocabulary#hasProjectId> ?i}`, [project + '/local/'], {results: true, single: true, variable: "i"}, getDefaultSession()); console.log(res); return res})
+
     async function activateProject() {
-
       if (projects.includes(project)) {
-
         setProjects((proj) =>
           proj.filter((p) => {
             return p != project;
           })
         );
-        setTrigger((t) => t + 1)
-
+        setDatasets([])
       } else {
-
-        setProjects((proj) => [...proj, project]);
-        await loadProjectMetadata(project, store, getDefaultSession());
-        console.log("done");
-        setTrigger((t) => t + 1)
-
+        setProjects((projects) => [...projects, project]);
       }
     }
-  
+
     return (
       <div>
         <Card style={{ marginTop: 5, marginBottom: 5 }} variant="outlined">
           <CardContent>
-            <Typography component="p">{project}</Typography>
+            <Typography component="p">
+                  {name}
+              </Typography>
             <FormGroup>
               <FormControlLabel
                 control={

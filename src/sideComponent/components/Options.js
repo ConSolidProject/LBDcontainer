@@ -24,7 +24,7 @@ export default (props) => {
     setTrigger,
     setProjects,
     projects,
-    store,
+    setDatasets,
     config,
     setConfig,
     drawerWidth,
@@ -99,7 +99,7 @@ export default (props) => {
               </AccordionDetails>
             </Accordion>
           </div>
-          <div>
+          {/* <div>
             <Accordion
               style={accStyle}
               expanded={aggregatorOpened}
@@ -122,7 +122,7 @@ export default (props) => {
                 />
               </AccordionDetails>
             </Accordion>
-          </div>
+          </div> */}
           <div>
             <Accordion
               style={accStyle}
@@ -139,15 +139,15 @@ export default (props) => {
               <AccordionDetails>
                 <ProjectCreation
                   trigger={trigger}
+                  setDatasets={setDatasets}
                   projects={projects}
                   setProjects={setProjects}
-                  store={store}
                   setTrigger={setTrigger}
                 />
               </AccordionDetails>
             </Accordion>
           </div>
-          {config ? (
+          {/* {config ? (
             <div>
               <Accordion
                 style={accStyle}
@@ -209,7 +209,7 @@ export default (props) => {
                 <FutureWork/>
               </AccordionDetails>
             </Accordion>
-          </div>
+          </div> */}
         </Drawer>
       </React.Fragment>
     </div>

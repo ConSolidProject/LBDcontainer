@@ -1,8 +1,7 @@
 import React, { useMemo, useState, useEffect, useRef } from "react";
 import mem from "mem";
-import { useHistory } from "react-router-dom";
+
 const loadComponent = mem(async (scope, module) => {
-  console.log(`scope, module`, scope, module);
   const factory = await window[scope].get(module);
   return factory;
 });
@@ -23,12 +22,10 @@ const useDynamicScript = mem((args) => {
       document.head.appendChild(element);
 
       element.onload = () => {
-        console.log(`Dynamic Script Loaded: ${args.url}`);
         resolve();
       };
 
       element.onerror = () => {
-        console.error(`Dynamic Script Error: ${args.url}`);
         reject();
       };
     } catch (error) {
@@ -58,7 +55,6 @@ const System = React.memo((props) => {
   const getTheMount = async () => {
     try {
       const m = await getFromRemote(props, "default");
-      console.log(`m`, m)
       m(ref.current, {
         ...props,
         // onNavigate: ({ pathname: nextPathname }) => {

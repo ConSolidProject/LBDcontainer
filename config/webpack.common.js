@@ -1,40 +1,39 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const webpack = require('webpack')
-const fs = require('fs')
-const path = require('path')
+const webpack = require("webpack");
+const fs = require("fs");
+const path = require("path");
 
 // absolute paths to all symlinked modules inside `nodeModulesPath`
 // adapted from https://github.com/webpack/webpack/issues/811#issuecomment-405199263
 const findLinkedModules = (nodeModulesPath) => {
-  const modules = []
+  const modules = [];
 
-  fs.readdirSync(nodeModulesPath).forEach(dirname => {
-    const modulePath = path.resolve(nodeModulesPath, dirname)
-    const stat = fs.lstatSync(modulePath)
+  fs.readdirSync(nodeModulesPath).forEach((dirname) => {
+    const modulePath = path.resolve(nodeModulesPath, dirname);
+    const stat = fs.lstatSync(modulePath);
 
-    if (dirname.startsWith('.')) {
+    if (dirname.startsWith(".")) {
       // not a module or scope, ignore
-    } else if (dirname.startsWith('@')) {
+    } else if (dirname.startsWith("@")) {
       // scoped modules
-      modules.push(...findLinkedModules(modulePath))
+      modules.push(...findLinkedModules(modulePath));
     } else if (stat.isSymbolicLink()) {
-      const realPath = fs.realpathSync(modulePath)
-      const realModulePath = path.resolve(realPath, 'node_modules')
+      const realPath = fs.realpathSync(modulePath);
+      const realModulePath = path.resolve(realPath, "node_modules");
 
-      modules.push(realModulePath)
+      modules.push(realModulePath);
     }
-  })
+  });
 
-  return modules
-}
-
+  return modules;
+};
 
 module.exports = {
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
     symlinks: false,
     modules: [
-      'node_modules',
+      "node_modules",
       // 'app',
       // provide absolute path to the main node_modules,
       // to avoid webpack searching around and getting confused
@@ -58,18 +57,18 @@ module.exports = {
       fs: require.resolve("browserify-fs"),
       https: require.resolve("https-browserify"),
       http: require.resolve("stream-http"),
-    url: require.resolve("url/"),
-    querystring: require.resolve("querystring-es3")
+      url: require.resolve("url/"),
+      querystring: require.resolve("querystring-es3"),
     },
-    // alias: {
-    //   consolid: "/home/jmauwerb/Documents/LBDserver/consolid"
-    // }
   },
   module: {
     rules: [
       {
         test: /\.m?js$/,
         exclude: /node_modules/,
+        resolve: {
+          fullySpecified: false,
+        },
         use: {
           loader: "babel-loader",
           options: {
@@ -81,7 +80,7 @@ module.exports = {
       {
         test: /\.css$/,
         use: ["style-loader", "css-loader"],
-      }
+      },
     ],
   },
   plugins: [
@@ -89,11 +88,13 @@ module.exports = {
       template: "./public/index.html",
     }),
     new webpack.ProvidePlugin({
-      process: 'process/browser',
-}),
-new webpack.ProvidePlugin({
-  stream: 'stream-browserify',
-})
+      process: "process/browser",
+    }),
+    new webpack.ProvidePlugin({
+      stream: "stream-browserify",
+    }),
+    new webpack.ProvidePlugin({
+      Buffer: ["buffer", "Buffer"],
+    }),
   ],
 };
-

@@ -1,13 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  getProjectsFromAggregator,
-  loadProjectMetadata,
-  createProject,
-  getLBDlocation,
-  checkInvites,
-  joinProject
-} from "consolid";
-import {
   TextField,
   Button,
   Switch,
@@ -23,48 +15,51 @@ import { v4 } from "uuid";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import ProjectCard from "./ProjectCard";
 
-export default ({ store, projects, setProjects, trigger, setTrigger }) => {
+
+import {createProject, getProjects} from 'consolid'
+
+export default ({ projects, setProjects, setDatasets, trigger, setTrigger }) => {
   const [aggregator, setAggregator] = useState(
     "https://pod.lbdserver.org/jeroen/lbd/"
   );
   const [myProjects, setMyProjects] = useState([]);
-  const [stakeholders, setStakeholders] = useState(
-    "https://pod.lbdserver.org/pieter/profile/card#me; https://podlbdserver.org/jakob/profile/card#me"
-  );
+  const [stakeholders, setStakeholders] = useState("");
+  const [guid, setGuid] = useState("")
   const [invites, setInvites] = useState([]);
   // trigger rerender on trigger (i.e. if session changes)
   useEffect(() => {
     getMyInvites()
   }, [trigger]);
 
-
-  async function fetchAggregator(agg, setter) {
-    const projects = await getProjectsFromAggregator(agg, getDefaultSession());
-
-    setter(projects);
-  }
-
   async function onProjectCreate() {
     const st = stakeholders.split(";").map((el) => {
       return el.replace(/\s+/g, "");
     });
     st.push(getDefaultSession().info.webId);
-    await createProject(v4(), st, {}, getDefaultSession());
-    await getMyProjects();
+    let id
+    if (guid.length > 0) {
+      id = guid
+    } else {
+      id = v4()
+    }
+    await createProject(id, st, {}, getDefaultSession());
+    const proj = await getProjects(getDefaultSession().info.webId, getDefaultSession());
+    console.log(`proj`, proj)
+    setMyProjects(proj)
   }
 
-  async function getMyProjects() {
-    const myLbdLocation = await getLBDlocation(
-      getDefaultSession().info.webId,
-      getDefaultSession()
-    );
-    await fetchAggregator(myLbdLocation, setMyProjects);
-  }
+  // async function getProjects() {
+  //   const myLbdLocation = await getLBDlocation(
+  //     getDefaultSession().info.webId,
+  //     getDefaultSession()
+  //   );
+  //   await fetchAggregator(myLbdLocation, setMyProjects);
+  // }
 
   async function getMyInvites() {
     try {
-    const theInvites = await checkInvites(getDefaultSession())
-    setInvites(theInvites)      
+    // const theInvites = await checkInvites(getDefaultSession())
+    // setInvites(theInvites)      
     } catch (error) {
       console.log(`error`, error)
     }
@@ -86,7 +81,11 @@ export default ({ store, projects, setProjects, trigger, setTrigger }) => {
                 fullWidth
                 variant="contained"
                 color="primary"
-                onClick={async () => getMyProjects()}
+                onClick={async () => {
+                  const projects = await getProjects(getDefaultSession().info.webId, getDefaultSession());
+                  console.log(`projects`, projects)
+                  setMyProjects(projects)
+                }}
                 style={{ marginTop: 5, marginBottom: 5 }}
               >
                 Get my projects
@@ -94,11 +93,11 @@ export default ({ store, projects, setProjects, trigger, setTrigger }) => {
               {myProjects.map((item) => {
                 return (
                   <ProjectCard
+                    setDatasets={setDatasets}
                     key={item}
                     project={item}
                     projects={projects}
                     setProjects={setProjects}
-                    store={store}
                     setTrigger={setTrigger}
                   />
                 );
@@ -116,9 +115,17 @@ export default ({ store, projects, setProjects, trigger, setTrigger }) => {
                 label="Stakeholders (separate by ';')"
                 multiline
                 fullWidth
-                rowsMax={10}
+                maxRows={10}
                 value={stakeholders.toString()}
                 onChange={(e) => setStakeholders(e.target.value)}
+                style={{ marginTop: 10, marginBottom: 10 }}
+              />{" "}
+              <TextField
+                id="standard-multiline-flexible"
+                label="Optional GUID of project to join"
+                fullWidth
+                value={guid}
+                onChange={(e) => setGuid(e.target.value)}
                 style={{ marginTop: 10, marginBottom: 10 }}
               />{" "}
               <Button
@@ -159,7 +166,7 @@ export default ({ store, projects, setProjects, trigger, setTrigger }) => {
               {invites ? <div>
                 {invites.map(inv => {
                   return (
-                    <InviteCard sender={inv.sender} reference={inv.ref} invite={inv.source} callback={getMyProjects}/>
+                    <InviteCard sender={inv.sender} reference={inv.ref} invite={inv.source} callback={getProjects}/>
                   )
                 })}
               </div> 

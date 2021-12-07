@@ -2,26 +2,24 @@ import React, { memo, useRef, useState, Suspense, useEffect } from "react";
 import Draggable from "react-draggable";
 import { atom, useRecoilState, useRecoilValue } from "recoil";
 import mem from "mem";
-import System from "./System";
+import System from "../utils/System";
 import { IconButton, Typography } from "@material-ui/core";
 import CompareArrowsIcon from "@material-ui/icons/CompareArrows";
 import LockIcon from "@material-ui/icons/Lock";
 import LockOpenIcon from "@material-ui/icons/LockOpen";
 import ExpandLessIcon from "@material-ui/icons/ExpandLess";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import GenericRemoteComponent from "./GenericRemoteComponent";
-import wrapComponent from "../../../utils/ErrorBoundary";
-import c from "../../../config";
+import c from "../config";
 import {
   store as s,
   session as sess,
   projects as p,
-  activeResources as sel,
+  datasets as sel,
   selectedElements as se,
   selectionId as sId,
   openOptions as o,
   trigger as t,
-} from "../../../atoms";
+} from "../atoms";
 import { getDefaultSession } from "@inrupt/solid-client-authn-browser";
 
 // const myModules = require("../../../../config/configuration.js");
@@ -159,26 +157,10 @@ const DrawModule = ({ id, mod }) => {
   );
 };
 
-const RemoteModule = ({ module: mod }) => {
-  const mount = myModules[mod.scope];
-  let children;
-  if (mod.children) {
-    children = {};
-    Object.keys(mod.children).forEach(
-      (child) =>
-        (children[mod.children[child].scope] =
-          myModules[mod.children[child].scope])
-    );
-  }
-  return (
-    <GenericRemoteComponent mount={mount} module={mod} children={children} />
-  );
-};
-
 const HotRemoteModule = ({ mod }) => {
   const store = useRecoilValue(s);
   const config = useRecoilValue(c)
-  const [activeResources, setActiveResources] = useRecoilState(sel);
+  const [datasets, setDatasets] = useRecoilState(sel);
   const [selectedElements, setSelectedElements] = useRecoilState(se);
   const [projects, setProjects] = useRecoilState(p);
   const [selectionId, setSelectionId] = useRecoilState(sId);
@@ -194,8 +176,8 @@ const HotRemoteModule = ({ mod }) => {
     projects,
     setProjects,
     store,
-    activeResources,
-    setActiveResources,
+    datasets,
+    setDatasets,
     selectedElements,
     setSelectedElements,
     selectionId,

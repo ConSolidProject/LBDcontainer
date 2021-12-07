@@ -26,15 +26,16 @@ const session = atom({
 
 const projects = atom({
     key: "projects",
-    default: []
+    default: ["http://localhost:5000/arch/lbd/testproject/"]
+
     // default: ["http://localhost:5000/jeroen/lbd/c9f58795-1d37-4f8f-b7e2-60f3cff5f716/"]
     // default: ["http://localhost:5000/jeroen/lbd/642f0417-ce23-4d9d-8806-c078aed93ae1/"]
     // default: {global: "http://localhost:5000/1project/profile/card#me", local: "http://localhost:5000/architect/lbd/b1e65aa0-3a43-47b3-9932-7306b15ffebe/"}
     // // default: {global: "http://localhost:5000/gravensteen/profile/card#me", local: "http://localhost:5000/facilitymanager/lbd/5f72a700-40eb-4a41-b88a-2983b3cd6cbc/"}
 })
 
-const activeResources = atom({
-    key: "activeResources",
+const datasets = atom({
+    key: "datasets",
     default: [
     //     {
     //     resource: "http://localhost:5000/architect/lbd/b1e65aa0-3a43-47b3-9932-7306b15ffebe/duplex.ttl",
@@ -87,4 +88,4 @@ const trigger = atom({
 
 
 
-export {store, session, projects, activeResources, selectedElements, selectionId, trigger, openOptions}
+export {store, session, projects, datasets, selectedElements, selectionId, trigger, openOptions}

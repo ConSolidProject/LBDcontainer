@@ -37,7 +37,7 @@ export default ({trigger, projects, setProjects, store, setTrigger}) => {
   }
 
 
-  async function getMyProjects() {
+  async function getProjects() {
     const myLbdLocation = await getLBDlocation(
         getDefaultSession().info.webId,
         getDefaultSession()
