@@ -35,7 +35,7 @@ async function getAuthentication() {
 }
 
 export default ({trigger, setTrigger}) => {
-  const [oidcIssuer, setOidcIssuer] = useState("http://localhost:5000");
+  const [oidcIssuer, setOidcIssuer] = useState("https://pod.lbdserver.org");
   const [loading, setLoading] = useState(false);
   // this function only runs when the component mounts. If the mount is the result of a redirect from a Solid Identity Provider, the Session is verified and extracted, and the user is authenticated.
   useEffect(() => {

@@ -30,7 +30,7 @@ export default ({ config, setConfig, trigger, setTrigger }) => {
         "DESCRIPTION: Activate the project 'duplex' in the 'DEMO PROJECTS' tab. Use the Resource Manager Plugin to activate the resources 'geom_arch' and 'lbd_arch. The 'geom_arch' dataset has a gltf distribution, which can be displayed by the Viewer Plugin. The 'lbd_arch' dataset is RDF and can be queried by the Query Plugin. Try some adaptations of the query (e.g. visualise beo:Window instead of beo:Door).",
     },
     {
-      description: "Visualise 3D geometry and related image zones",
+      description: "Visualise 3D geometry and related image zones (PROJECT: Gravensteen)",
       url: "https://pod.consolidproject.be/struc/configs/linkImageAndGLTF.json",
       guide:
         "DESCRIPTION: Activate the project 'gravensteen' in the 'DEMO PROJECTS' tab. Use the Resource Manager Plugin to activate the resources 'img_interior1' and 'geometry_castle. The 'geometry_castle' dataset has a gltf distribution, which can be displayed by the Viewer Plugin. The 'img_interior1' dataset contains an image. Navigate in the 3D model and select an element of the columns. Then click 'GET ASSOCIATED REGIONS' in the image viewer. (NOTE: It's possible you have to click a few times)",

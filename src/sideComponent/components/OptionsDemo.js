@@ -69,16 +69,20 @@ export default (props) => {
             </Typography>
             <br />
             <Typography style={{ textAlign: "justify" }} variant="body1">
-              This application illustrates the main concepts of the LBDserver. It is a rough prototype and only serves demonstration purposes.
+              This application illustrates some of the main concepts of the LBDserver. It is a rough prototype and only serves demonstration purposes. Also, it may break.
             </Typography>
             <br />
             <Typography variant="body1">
               You can visit{" "}
               <a target="_blank" href="https://lbdserver.org">
-                https://lbdserver.org
+                https://github.com/ConsolidProject
               </a>{" "}
               for more information. When citing this research, please refer to
-              one of the following papers: [...]
+              one of the following papers: 
+            <ul>
+              <li>Werbrouck, J., Pauwels, P., Beetz, J., &amp; van Berlo, L. (2019). Towards a decentralised common data environment using linked building data and the solid ecosystem. In 36th CIB W78 2019 Conference (pp. 113-123).</li>
+              <li>Werbrouck, J., Pauwels, P., Beetz, J., &amp; Mannens, E. (2021). Data patterns for the organisation of federated linked building data. In LDAC2021, the 9th Linked Data in Architecture and Construction Workshop (pp. 1-12).</li>
+            </ul>
             </Typography>
           </div>
           {/* <div>

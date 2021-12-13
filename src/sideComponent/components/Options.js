@@ -80,6 +80,10 @@ export default (props) => {
               for more information. When citing this research, please refer to
               one of the following papers: [...]
             </Typography>
+
+            <Typography style={{ textAlign: "justify" }} variant="body1">
+              Authentication has been disabled for this demo. 
+            </Typography>
           </div>
           <div>
             <Accordion
