@@ -4,6 +4,7 @@ import {
   loadProjectMetadata,
   createProject,
   getLBDlocation,
+  getLdpMembers
 } from "consolid";
 import {
   TextField,
@@ -20,9 +21,9 @@ import { getDefaultSession } from "@inrupt/solid-client-authn-browser";
 import { v4 } from "uuid";
 import ProjectCard from './ProjectCard'
 
-export default ({trigger, projects, setProjects, store, setTrigger}) => {
+export default ({trigger, projects, setProjects, setDatasets, setTrigger}) => {
   const [aggregator, setAggregator] = useState(
-    "https://pod.lbdserver.org/some-aggregator/lbd/"
+    "https://pod.lbdserver.org/arch/lbd/"
   );
   const [data, setData] = useState([]);
   const [myProjects, setMyProjects] = useState([]);
@@ -31,18 +32,9 @@ export default ({trigger, projects, setProjects, store, setTrigger}) => {
   useEffect(() => {}, [trigger]);
 
   async function fetchAggregator(agg, setter) {
-    const projects = await getProjectsFromAggregator(agg, getDefaultSession());
+    const projects = await getLdpMembers([agg], getDefaultSession())
     console.log(`projects`, projects);
     setter(projects);
-  }
-
-
-  async function getProjects() {
-    const myLbdLocation = await getLBDlocation(
-        getDefaultSession().info.webId,
-        getDefaultSession()
-      );
-    await fetchAggregator(myLbdLocation, setMyProjects);
   }
 
   return (
@@ -73,15 +65,25 @@ export default ({trigger, projects, setProjects, store, setTrigger}) => {
           variant="contained"
           color="primary"
           onClick={async () => {
-            await fetchAggregator(aggregator, setData);
+            const projects = await getLdpMembers([aggregator], getDefaultSession())
+            setMyProjects(projects)
           }}
           style={{ marginTop: 20 }}
         >
           GET PROJECTS
         </Button>
-        {data.map((item) => {
-          return <ProjectCard key={item} project={item} projects={projects} store={store} setProjects={setProjects} setTrigger={setTrigger}/>;
-        })}
+            {myProjects.map((item) => {
+              return (
+                <ProjectCard
+                  setDatasets={setDatasets}
+                  key={item}
+                  project={item}
+                  projects={projects}
+                  setProjects={setProjects}
+                  setTrigger={setTrigger}
+                />
+              );
+            })}
       </Container>
     </React.Fragment>
   );

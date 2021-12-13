@@ -65,7 +65,7 @@ export default ({ config, setConfig, trigger, setTrigger }) => {
           <li>...</li>
           </ul>
         <Typography style={{ textAlign: "justify" }} variant="body1">
-          If you're interested, please contact me at jeroen.werbrouck [ at ] ugent.be
+          If you're interested, please contact me at jeroen [dot] werbrouck [ at ] ugent [dot] be
         </Typography>
       </Container>
     </React.Fragment>

@@ -1,4 +1,4 @@
-import Options from './components/Options'
+import Options from './components/OptionsDemo'
 import SignIn from './components/SignIn'
 import ProjectCard from './components/ProjectCard'
 import Aggregator from './components/Aggregator'
