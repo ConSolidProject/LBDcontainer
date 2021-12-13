@@ -20,7 +20,7 @@ import {createProject, getProjects} from 'consolid'
 
 export default ({ projects, setProjects, setDatasets, trigger, setTrigger }) => {
   const [aggregator, setAggregator] = useState(
-    "https://pod.lbdserver.org/jeroen/lbd/"
+    "http://localhost:5000"
   );
   const [myProjects, setMyProjects] = useState([]);
   const [stakeholders, setStakeholders] = useState("");

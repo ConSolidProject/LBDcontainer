@@ -26,7 +26,7 @@ const session = atom({
 
 const projects = atom({
     key: "projects",
-    default: ["http://localhost:5000/arch/lbd/testproject/"]
+    default: []
 
     // default: ["http://localhost:5000/jeroen/lbd/c9f58795-1d37-4f8f-b7e2-60f3cff5f716/"]
     // default: ["http://localhost:5000/jeroen/lbd/642f0417-ce23-4d9d-8806-c078aed93ae1/"]

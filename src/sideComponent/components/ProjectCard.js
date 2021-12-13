@@ -21,7 +21,7 @@ import {
 
 
 export default ({ project, projects, setProjects, setDatasets }) => {
-  const { isLoading, isError, data: name, error } = useQuery(project, async () => {const res = await queryComunica(`select ?i where {?p <https://lbdserver.org/vocabulary#hasProjectId> ?i}`, [project + '/local/'], {results: true, single: true, variable: "i"}, getDefaultSession()); console.log(res); return res})
+  const { isLoading, isError, data: name, error } = useQuery(project, async () => {const res = await queryComunica(`select ?i where {?p <https://lbdserver.org/vocabulary#hasProjectId> ?i}`, [project + 'local/'], {results: true, single: true, variable: "i"}, getDefaultSession()); console.log(res); return res})
 
     async function activateProject() {
       if (projects.includes(project)) {
@@ -32,7 +32,7 @@ export default ({ project, projects, setProjects, setDatasets }) => {
         );
         setDatasets([])
       } else {
-        setProjects((projects) => [...projects, project]);
+        setProjects([project]);
       }
     }
 

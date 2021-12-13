@@ -12,7 +12,7 @@ const config = atom({
       dimensions: {
         x: 0,
         y: 0,
-        h: 800,
+        h: 900,
         w: 600,
       },
       children: {
@@ -38,10 +38,22 @@ const config = atom({
       dimensions: {
         x: 600,
         y: 0,
-        h: 800,
+        h: 400,
         w: 800,
       },
     },
+    imageannotator: {
+      url: "http://localhost:8084/remoteEntry.js",
+      scope: "imageannotator",
+      label: "imageannotator",
+      module: "./index",
+      dimensions: {
+        x: 600,
+        y: 400,
+        h: 500,
+        w: 800,
+      },
+    }
   },
 });
 
