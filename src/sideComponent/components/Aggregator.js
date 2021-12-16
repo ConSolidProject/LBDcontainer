@@ -27,6 +27,7 @@ export default ({trigger, projects, setProjects, setDatasets, setTrigger}) => {
   );
   const [data, setData] = useState([]);
   const [myProjects, setMyProjects] = useState([]);
+  const [error, setError] = useState()
 
   // trigger rerender on trigger (i.e. if session changes)
   useEffect(() => {}, [trigger]);
@@ -65,8 +66,17 @@ export default ({trigger, projects, setProjects, setDatasets, setTrigger}) => {
           variant="contained"
           color="primary"
           onClick={async () => {
-            const projects = await getLdpMembers([aggregator], getDefaultSession())
-            setMyProjects(projects)
+            try {
+              const projects = await getLdpMembers([aggregator], getDefaultSession())
+              console.log(`projects`, projects)
+              if (projects.length == 0) {
+                throw new Error("Something went wrong. The aggregator may be offline. Our apologies for this inconvenience.")
+              }
+              setMyProjects(projects)
+            } catch (err) {
+              console.log(`error`, err)
+              setError(err)
+            }
           }}
           style={{ marginTop: 20 }}
         >
@@ -84,6 +94,7 @@ export default ({trigger, projects, setProjects, setDatasets, setTrigger}) => {
                 />
               );
             })}
+            {error && error.message}
       </Container>
     </React.Fragment>
   );
